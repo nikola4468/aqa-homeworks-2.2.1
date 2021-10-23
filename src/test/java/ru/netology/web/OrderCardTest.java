@@ -15,24 +15,23 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class OrderCardTest {
 
-    public Date getToDateAfterDays(Integer day) {
-        Date nowdate = new Date();
+    public String getToDate(int day) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        Date newDate = new Date();
         Calendar cal = Calendar.getInstance();
-        cal.setTime(nowdate);
+        cal.setTime(newDate);
         cal.add(Calendar.DATE, day);
-        return cal.getTime();
+        Date date = cal.getTime();
+        return formatter.format(date);
     }
 
     @Test
     void shouldRegisterByOrderCard() {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-        Date date = getToDateAfterDays(3);
-        String ff = formatter.format(date);
-
+        String day = getToDate(3);
         open("http://localhost:9999");
         $("[data-test-id='city'] .input__control").setValue("Москва");
         $("[data-test-id='date'] .input__control").doubleClick().sendKeys(Keys.DELETE);
-        $("[data-test-id='date'] .input__control").setValue(ff);
+        $("[data-test-id='date'] .input__control").setValue(day);
         $("[data-test-id='name'] .input__control").setValue("Николай");
         $("[data-test-id='phone'] .input__control").setValue("+79299942766");
         $("[data-test-id='agreement']").click();
